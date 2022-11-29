@@ -1,0 +1,65 @@
+configfile: "../config/config.yaml"
+
+ref_genome,=glob_wildcards("../resources/ref_genome/{reference_genome}.fasta")
+sample,=glob_wildcards("../resources/samples/{sample}_R1_001.fastq")
+trim=config['trim']
+
+shell("bwa index ../resources/ref_genome/{ref_genome}.fasta")
+
+if trim :
+ shell("mkdir ../results/trimmed_reads")
+ shell("trim_galore --paired {sample}_R1_001.fastq {sample}_R2_001.fastq -o ../results/trimmed_reads")
+ sample,=glob_wildcards("../results/trimmed_reads/{sample}_R1_001_trimmed.fq")
+
+rule all:
+ input:
+  "../results/varscan_output/varscan_read_counts.txt"
+
+rule bwa_map:
+ input:
+  read1="../resources/samples/{sample}_R1_001.fastq",
+  read2="../resources/samples/{sample}_R2_001.fastq"
+ output: 
+  "../results/mapped_reads/{sample}.bam"
+ shell:
+  "bwa mem ../resources/{ref_genome}.fasta {input.read1} {input.read2} | samtools view -Sb -o {output}"
+
+rule samtools_sort:
+ input: 
+  "../results/mapped_reads/{sample}.bam"
+ output: 
+  "../results/sorted_reads/{sample}.bam"
+ shell:
+  "samtools sort {input} > {output}"
+
+rule samtools_index:
+ input:
+  "../results/sorted_reads/{sample}.bam"
+ output:
+  "../results/sorted_reads/{sample}.bam.bai"
+ shell:
+  "samtools index {input}"
+
+rule samtools_mpileup:
+ input:
+  bam=expand("../results/sorted_reads/{sample}.bam",sample=sample),
+  bai=expand("../results/sorted_reads/{sample}.bam.bai",sample=sample)
+ output:
+  "../results/mpileup/combined.mpileup"
+ params:
+  max_read_depth=lambda wc: config['max_read_depth'],
+  qscore=lambda wc: config['qscore']
+ shell:
+  "samtools mpileup -A -d {params.max_read_depth} -Q {params.qscore} -f resources/{ref_genome}.fasta {input.bam} > {output}"
+
+rule varscan:
+ input:
+  "../results/mpileup/combined.mpileup"
+ output:
+  "../results/varscan_output/varscan_read_counts.txt"
+ params:
+  var_file=lambda wc: config['var_file'],
+  min_base_qual=lambda wc: config['min_base_qual']
+ shell:
+  "varscan readcounts {input} --variants-file ../resources/{params.var_file} --min-base-qual {params.min_base_qual} --output-file {output}"
+

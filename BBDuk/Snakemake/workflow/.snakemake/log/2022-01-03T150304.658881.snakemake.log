@@ -1,0 +1,33 @@
+Building DAG of jobs...
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+BBDuk_PE            1              1              1
+all                 1              1              1
+session_info        1              1              1
+total               3              1              1
+
+
+[Mon Jan  3 15:03:04 2022]
+rule session_info:
+    output: ../results/projectname_BBDuk_SessionInfo.csv
+    jobid: 2
+    wildcards: projectname=projectname
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:03:04 2022]
+rule BBDuk_PE:
+    input: ../resources/sample1_R1_FASTQ.fastq, ../resources/sample1_R2_FASTQ.fastq
+    output: ../results/RawReads/sample1_testing
+    jobid: 1
+    wildcards: sample=sample1
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:03:04 2022]
+rule all:
+    input: ../results/RawReads/sample1_testing, ../results/projectname_BBDuk_SessionInfo.csv
+    jobid: 0
+    resources: tmpdir=/tmp
+
+RuleException in line 5 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+NameError: The name 'projectname' is unknown in this context. Please make sure that you defined that variable. Also note that braces not used for variable access have to be escaped by repeating them, i.e. {{print $1}}

@@ -1,0 +1,3 @@
+WorkflowError in line 1 of /home/rebecca/omicon/transformations/BBDuk/workflow/Snakefile:
+Config file ../config/config.yaml not found.
+  File "/home/rebecca/omicon/transformations/BBDuk/workflow/Snakefile", line 1, in <module>

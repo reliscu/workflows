@@ -1,0 +1,50 @@
+Rscript /home/rebecca/omicon/transformations/helper_functions/compareConfig.R
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+BBDuk_PE            1              1              1
+all                 1              1              1
+param_config        1              1              1
+session_info        1              1              1
+total               4              1              1
+
+Select jobs to execute...
+
+[Mon Jan  3 17:15:40 2022]
+rule param_config:
+    output: ../results/projectname_BBDuk/projectname_ParamConfig.yaml
+    jobid: 3
+    wildcards: projectname=projectname, transformation=BBDuk
+    resources: tmpdir=/tmp
+
+cp ../config/ParamConfig.yaml ../results/projectname_BBDuk/projectname_ParamConfig.yaml
+
+[Mon Jan  3 17:15:40 2022]
+rule session_info:
+    output: ../results/projectname_BBDuk/projectname_SessionInfo.csv
+    jobid: 2
+    wildcards: projectname=projectname_BBDuk/projectname
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 17:15:40 2022]
+rule BBDuk_PE:
+    input: ../resources/SF10711_9-1-22_CAGATC_L001_001_R1_FASTQ.fastq, ../resources/SF10711_9-1-22_CAGATC_L001_001_R2_FASTQ.fastq
+    output: ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R1_trimmed_FASTQ.fastq, ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R2_trimmed_FASTQ.fastq
+    jobid: 1
+    wildcards: projectname=projectname, sample=SF10711_9-1-22_CAGATC_L001_001
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 17:15:40 2022]
+Finished job 3.
+1 of 4 steps (25%) done
+Rscript --vanilla /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/.snakemake/scripts/tmppp9momc1.makeSessionInfo.R
+[Mon Jan  3 17:15:40 2022]
+Finished job 2.
+2 of 4 steps (50%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/.snakemake/log/2022-01-03T171540.045342.snakemake.log

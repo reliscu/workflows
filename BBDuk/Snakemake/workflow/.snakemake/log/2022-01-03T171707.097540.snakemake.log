@@ -1,0 +1,37 @@
+Rscript /home/rebecca/omicon/transformations/helper_functions/compareConfig.R
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 10
+Rules claiming more threads will be scaled down.
+Job stats:
+job         count    min threads    max threads
+--------  -------  -------------  -------------
+BBDuk_PE        1              1              1
+all             1              1              1
+total           2              1              1
+
+Select jobs to execute...
+
+[Mon Jan  3 17:17:07 2022]
+rule BBDuk_PE:
+    input: ../resources/SF10711_9-1-22_CAGATC_L001_001_R1_FASTQ.fastq, ../resources/SF10711_9-1-22_CAGATC_L001_001_R2_FASTQ.fastq
+    output: ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R1_trimmed_FASTQ.fastq, ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R2_trimmed_FASTQ.fastq
+    jobid: 1
+    wildcards: projectname=projectname, sample=SF10711_9-1-22_CAGATC_L001_001
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 17:17:11 2022]
+Finished job 1.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Mon Jan  3 17:17:11 2022]
+localrule all:
+    input: ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R1_trimmed_FASTQ.fastq, ../results/projectname_RawReads/SF10711_9-1-22_CAGATC_L001_001_R2_trimmed_FASTQ.fastq, ../results/projectname_BBDuk/projectname_SessionInfo.csv, ../results/projectname_BBDuk/projectname_ParamConfig.yaml
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 17:17:11 2022]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/.snakemake/log/2022-01-03T171707.097540.snakemake.log

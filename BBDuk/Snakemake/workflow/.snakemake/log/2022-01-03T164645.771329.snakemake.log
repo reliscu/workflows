@@ -1,0 +1,2 @@
+SyntaxError in line 55 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+unterminated string literal (detected at line 82)

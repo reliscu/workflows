@@ -1,0 +1,2 @@
+SyntaxError in line 20 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+EOF in multi-line statement (Snakefile, line 20)

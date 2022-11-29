@@ -1,0 +1,62 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+BBDuk_PE            2              1              1
+all                 1              1              1
+session_info        1              1              1
+total               4              1              1
+
+Select jobs to execute...
+
+[Mon Jan  3 15:25:46 2022]
+rule BBDuk_PE:
+    input: ../resources/sample1_R1_FASTQ.fastq, ../resources/sample1_R2_FASTQ.fastq
+    output: ../results/projectname_RawReads/sample1_trimmed
+    jobid: 2
+    wildcards: projectname=projectname, sample=sample1
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:25:46 2022]
+Finished job 2.
+1 of 4 steps (25%) done
+Select jobs to execute...
+
+[Mon Jan  3 15:25:46 2022]
+rule session_info:
+    output: ../results/projectname_BBDuk_SessionInfo.csv
+    jobid: 3
+    wildcards: projectname=projectname
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:25:46 2022]
+Finished job 3.
+2 of 4 steps (50%) done
+Select jobs to execute...
+
+[Mon Jan  3 15:25:46 2022]
+rule BBDuk_PE:
+    input: ../resources/sample2_R1_FASTQ.fastq, ../resources/sample2_R2_FASTQ.fastq
+    output: ../results/projectname_RawReads/sample2_trimmed
+    jobid: 1
+    wildcards: projectname=projectname, sample=sample2
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:25:47 2022]
+Finished job 1.
+3 of 4 steps (75%) done
+Select jobs to execute...
+
+[Mon Jan  3 15:25:47 2022]
+localrule all:
+    input: ../results/projectname_RawReads/sample2_trimmed, ../results/projectname_RawReads/sample1_trimmed, ../results/projectname_BBDuk_SessionInfo.csv
+    jobid: 0
+    resources: tmpdir=/tmp
+
+[Mon Jan  3 15:25:47 2022]
+Finished job 0.
+4 of 4 steps (100%) done
+Complete log: /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/.snakemake/log/2022-01-03T152545.940843.snakemake.log

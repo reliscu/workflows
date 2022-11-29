@@ -1,0 +1,20 @@
+Building DAG of jobs...
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+BBDuk_PE            1              1              1
+all                 1              1              1
+param_config        1              1              1
+session_info        1              1              1
+total               4              1              1
+
+
+[Mon Jan  3 16:47:06 2022]
+rule param_config:
+    output: ../results/projectname_BBDuk/projectname_ParamConfig.yaml
+    jobid: 3
+    wildcards: projectname=projectname
+    resources: tmpdir=/tmp
+
+RuleException in line 51 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+NameError: The name 'projectname' is unknown in this context. Did you mean 'wildcards.projectname'?

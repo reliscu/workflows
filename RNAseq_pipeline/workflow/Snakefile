@@ -1,0 +1,70 @@
+configfile: "../config/config.yaml"
+import glob
+
+annotation,=glob_wildcards("../resources/ref_genome/{annotation}.gtf")
+ref_genome,=glob_wildcards("../resources/ref_genome/{reference_genome}.fa")
+#sample,=glob_wildcards("../resources/samples/{sample}.fastq")
+sample=["SF10711_9-1-47"] #,"SF10711_9-1-51"]
+
+if len(glob.glob("../resources/ref_genome/*.bt2"))==0 :
+ shell("bowtie2-build ../resources/ref_genome/{ref_genome}.fa ../resources/ref_genome")
+else:
+ print("Bowtie indexes already built!")
+
+rule all:
+ input:
+  "../results/feature_counts/feature_counts.txt"
+#  expand("../results/aligned_reads/{sample}_thout/accepted_hits.bam",sample=sample)
+
+rule trim_galore:
+ input:
+  "../resources/samples/{sample}.fastq"
+ output:
+  "../results/trimmed_reads/{sample}_trimmed.fq"
+ params:
+  num_threads=config['num_threads'],
+  quality_score=config['tg_quality_score'],
+  min_length=config['tg_min_length']
+ threads: 2 
+ shell:
+  """
+  trim_galore -j {params.num_threads} -q {params.quality_score} --fastqc\
+  --length {params.min_length} {input} -o ../results/trimmed_reads 
+  """
+
+rule tophat:
+ input:
+  "../results/trimmed_reads/{sample}_trimmed.fq"
+ output:
+  "../results/aligned_reads/{sample}_thout/accepted_hits.bam"
+ params:
+  num_threads=config['num_threads'],
+  library_type=config['th_library_type']
+ threads: 2 
+ shell:
+  """
+  tophat -p {params.num_threads} -G ../resources/ref_genome/{annotation}.gtf\
+  --library-type={params.library_type} -o ../results/aligned_reads/{sample}_thout\
+  ../resources/ref_genome/{ref_genome} {input}
+  """
+
+rule feature_counts:
+ input:
+  expand("../results/aligned_reads/{sample}_thout/accepted_hits.bam",sample=sample)
+ output:
+  "../results/feature_counts/feature_counts.txt"
+ params:
+  num_threads=config['num_threads'],
+  feature_type=config['fc_feature_type'],
+  attribute_type=config['fc_attribute_type'],
+  quality_score=config['fc_quality_score'],
+  strand=config['fc_strand']
+ shell:
+  """
+  featureCounts -T {params.num_threads} -a ../resources/ref_genome/{annotation}.gtf\
+  -t {params.feature_type} -g {params.attribute_type}\
+  -Q {params.quality_score} -s {params.strand} -o {output} {input}
+  """
+
+
+

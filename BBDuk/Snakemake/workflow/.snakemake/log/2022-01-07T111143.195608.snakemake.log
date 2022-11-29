@@ -1,0 +1,35 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job             count    min threads    max threads
+------------  -------  -------------  -------------
+BBDuk_PE            1              1              1
+all                 1              1              1
+param_config        1              1              1
+session_info        1              1              1
+total               4              1              1
+
+Select jobs to execute...
+
+[Fri Jan  7 11:11:43 2022]
+rule session_info:
+    output: Snakemake/results/projectname_BBDuk/projectname_SessionInfo.csv
+    jobid: 2
+    wildcards: projectname=projectname_BBDuk/projectname
+    resources: tmpdir=/tmp
+
+[Fri Jan  7 11:11:43 2022]
+Error in rule session_info:
+    jobid: 2
+    output: Snakemake/results/projectname_BBDuk/projectname_SessionInfo.csv
+
+RuleException:
+CalledProcessError in line 5 of /home/rebecca/omicon/transformations/helper_functions/helper.smk:
+Command 'set -euo pipefail;  Rscript --vanilla /home/rebecca/omicon/transformations/BBDuk/.snakemake/scripts/tmpjdbgurap.makeSessionInfo.R' returned non-zero exit status 1.
+  File "/home/rebecca/omicon/transformations/helper_functions/helper.smk", line 5, in __rule_session_info
+  File "/home/shared/miniconda3/envs/snakemake/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/.snakemake/log/2022-01-07T111143.195608.snakemake.log

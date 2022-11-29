@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in line 5 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+Missing input files for rule all:
+../results/RawReads/sample1_testing
+../results/projectname_SessionInfo.csv

@@ -1,0 +1,4 @@
+Rscript /home/rebecca/omicon/transformations/helper_functions/compareConfig.R
+NameError in line 12 of /home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile:
+name 'transformation' is not defined
+  File "/home/rebecca/omicon/transformations/BBDuk/Snakemake/workflow/Snakefile", line 12, in <module>

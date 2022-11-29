@@ -1,0 +1,8 @@
+num_threads: 10 
+tg_quality_score: 30
+tg_min_length: 20
+th_library_type: "fr-firststrand"
+fc_feature_type: "exon"
+fc_attribute_type: "gene_id"
+fc_quality_score: 1
+fc_strand: 2
