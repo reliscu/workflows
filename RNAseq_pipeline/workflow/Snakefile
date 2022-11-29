@@ -9,7 +9,7 @@ sample=["SF10711_9-1-47"] #,"SF10711_9-1-51"]
 if len(glob.glob("../resources/ref_genome/*.bt2"))==0 :
  shell("bowtie2-build ../resources/ref_genome/{ref_genome}.fa ../resources/ref_genome")
 else:
- print("Bowtie indexes already built!")
+ print("Bowtie indices already built!")
 
 rule all:
  input:

@@ -1,22 +1,22 @@
-transformation = "BBDuk"
+transformation="BBDuk"
 
 workdir: "/home/rebecca/omicon/transformations/" + transformation
 configfile: "Snakemake/config/ParamConfig.yaml"
 include: "/home/rebecca/omicon/transformations/helper_functions/helper.smk"
 shell("Rscript /home/rebecca/omicon/transformations/helper_functions/update_config/update_config_Driver.R")
 
-sample, = glob_wildcards("Snakemake/resources/{sample}_R1_FASTQ.fastq")
+sample,=glob_wildcards("Snakemake/resources/{sample}_R1_FASTQ.fastq")
 
 rule all:
    input: 
       expand(["Snakemake/results/{projectname}_RawReads/{sample}_R1_trimmed_FASTQ.fastq", 
               "Snakemake/results/{projectname}_RawReads/{sample}_R2_trimmed_FASTQ.fastq"], 
-	      projectname = config['projectname'], 
-	      sample = sample),  
+	      projectname=config['projectname'], 
+	      sample=sample),  
       expand(["Snakemake/results/{projectname}_{transformation}/{projectname}_SessionInfo.csv", 
               "Snakemake/results/{projectname}_{transformation}/{projectname}_ParamConfig.yaml"], 
-	      projectname = config['projectname'], 
-	      transformation = transformation)
+	      projectname=config['projectname'], 
+	      transformation=transformation)
 
 rule BBDuk_PE:
    input:
@@ -26,18 +26,18 @@ rule BBDuk_PE:
       ["Snakemake/results/{projectname}_RawReads/{sample}_R1_trimmed_FASTQ.fastq", 
        "Snakemake/results/{projectname}_RawReads/{sample}_R2_trimmed_FASTQ.fastq"]                                                                
    params:
-      ref = lambda wc: config['ref'],
-      ktrim = lambda wc: config['ktrim'],
-      k = lambda wc: config['k'],
-      kmin = lambda wc: config['kmin'],
-      hdist = lambda wc: config['hdist'],
-      minlen = lambda wc: config['minlen'],
-      tpe = lambda wc: config['tpe'],
-      tbo = lambda wc: config['tbo']
+      ref=lambda wc: config['ref'],
+      ktrim=lambda wc: config['ktrim'],
+      k=lambda wc: config['k'],
+      kmin=lambda wc: config['kmin'],
+      hdist=lambda wc: config['hdist'],
+      minlen=lambda wc: config['minlen'],
+      tpe=lambda wc: config['tpe'],
+      tbo=lambda wc: config['tbo']
    run: 
-      reads = "in={} in2={}".format(*input)
-      trimmed = "out={} out2={}".format(*output)
-      command = " ".join([
+      reads="in={} in2={}".format(*input)
+      trimmed="out={} out2={}".format(*output)
+      command=" ".join([
          reads,
 	 "ref=" + str(params.ref), 
       	 "ktrim=" + str(params.ktrim), 
